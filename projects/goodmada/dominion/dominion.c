@@ -5,6 +5,96 @@
 #include <math.h>
 #include <stdlib.h>
 
+int smithyfunction(int currentPlayer, int handPos, struct gameState *state) {
+	//+3 Cards
+	int i;
+	for (i = 0; i < 3; i++)
+	{
+		drawCard(currentPlayer, state);
+	}
+
+	//discard card from hand
+	discardCard(handPos, currentPlayer, state, 1);
+	return 0;
+}
+
+int adventurerfunction(int drawntreasure, int currentPlayer, int z, struct gameState *state) {
+	int cardDrawn;
+	int temphand[MAX_HAND];
+	
+	while (drawntreasure<2) {
+		if (state->deckCount[currentPlayer] <1) {//if the deck is empty we need to shuffle discard and add to deck
+			shuffle(currentPlayer, state);
+		}
+		drawCard(currentPlayer, state);
+		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer] - 1];//top card of hand is most recently drawn card.
+		if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+			drawntreasure++;
+		else {
+			temphand[z] = cardDrawn;
+			state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+			z++;
+		}
+	}
+	while (z - 1 >= 0) {
+		state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[z - 1]; // discard all cards in play that have been drawn
+		z = z - 1;
+	}
+	return 0;
+
+}
+
+int gardensfunction() {
+	
+	return -1;
+}
+
+int sea_hagfunction(int currentPlayer, struct gameState *state) {
+
+	int i;
+	for (i = 0; i < state->numPlayers; i++) {
+		if (i == currentPlayer) {
+			state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];			    state->deckCount[i]--;
+			state->discardCount[i]++;
+			state->deck[i][state->deckCount[i]--] = curse;//Top card now a curse
+		}
+	}
+	return 0;
+}
+
+int treasure_mapfunction(int handPos, int currentPlayer, struct gameState *state) {
+	//search hand for another treasure_map
+	int index = -1;
+	int i;
+	for (i = 0; i < state->handCount[currentPlayer]; i++)
+	{
+		if (state->hand[currentPlayer][i] == treasure_map && i != index)
+		{
+			index = i;
+			break;
+		}
+	}
+	if (index > -1)
+	{
+		//trash both treasure cards
+		discardCard(handPos, currentPlayer, state, 1);
+		discardCard(index, currentPlayer, state, 1);
+
+		//gain 4 Gold cards
+		for (i = 0; i < 4; i++)
+		{
+			gainCard(gold, state, 1, currentPlayer);
+		}
+
+		//return success
+		return 1;
+	}
+
+	//no second treasure_map found in hand
+	return -1;
+
+}
+
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
     return 1;
@@ -662,30 +752,33 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     nextPlayer = 0;
   }
   
+  if (card == adventurer)
+  {
+	  return adventurerfunction(drawntreasure, currentPlayer, z, state);
+  }
+  else if (card == smithy)
+  {
+	  return smithyfunction(currentPlayer, handPos, state);
+  }
+  else if (card == sea_hag)
+  {
+	  return sea_hagfunction(currentPlayer, state);
+  }
+  else if (card == gardens)
+  {
+	  return gardensfunction();
+  }
+  else if (card == treasure_map)
+  {
+	  return treasure_mapfunction(handPos, currentPlayer, state);
+  }
+
 	
   //uses switch to select card and perform actions
   switch( card ) 
     {
-    case adventurer:
-      while(drawntreasure<2){
-	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
-	  shuffle(currentPlayer, state);
-	}
-	drawCard(currentPlayer, state);
-	cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
-	  drawntreasure++;
-	else{
-	  temphand[z]=cardDrawn;
-	  state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-	  z++;
-	}
-      }
-      while(z-1>=0){
-	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
-	z=z-1;
-      }
-      return 0;
+// remove case statements for refactored functions    case adventurer:
+//		return adventurerfunction(drawntreasure, currentPlayer, z, state);
 			
     case council_room:
       //+4 Cards
@@ -764,8 +857,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       			
       return 0;
 			
-    case gardens:
-      return -1;
+//    case gardens:
+//     return gardensfunction();
 			
     case mine:
       j = state->hand[currentPlayer][choice1];  //store card we will trash
@@ -828,16 +921,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
       return 0;
 		
-    case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+//    case smithy:
+//		return smithyfunction(currentPlayer, handPos, state);
 		
     case village:
       //+1 Card
@@ -1179,45 +1264,11 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
 		
-    case sea_hag:
-      for (i = 0; i < state->numPlayers; i++){
-	if (i != currentPlayer){
-	  state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];			    state->deckCount[i]--;
-	  state->discardCount[i]++;
-	  state->deck[i][state->deckCount[i]--] = curse;//Top card now a curse
-	}
-      }
-      return 0;
+//    case sea_hag:
+//		return sea_hagfunction(currentPlayer, state);
 		
-    case treasure_map:
-      //search hand for another treasure_map
-      index = -1;
-      for (i = 0; i < state->handCount[currentPlayer]; i++)
-	{
-	  if (state->hand[currentPlayer][i] == treasure_map && i != handPos)
-	    {
-	      index = i;
-	      break;
-	    }
-	}
-      if (index > -1)
-	{
-	  //trash both treasure cards
-	  discardCard(handPos, currentPlayer, state, 1);
-	  discardCard(index, currentPlayer, state, 1);
-
-	  //gain 4 Gold cards
-	  for (i = 0; i < 4; i++)
-	    {
-	      gainCard(gold, state, 1, currentPlayer);
-	    }
-				
-	  //return success
-	  return 1;
-	}
-			
-      //no second treasure_map found in hand
-      return -1;
+//    case treasure_map:
+//		return treasure_mapfunction(handPos, currentPlayer, state);
     }
 	
   return -1;
