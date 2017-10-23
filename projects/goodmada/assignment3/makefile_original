@@ -1,0 +1,5 @@
+cardtest: cardtest1.c smithyfunction.c dominion.h dominion_helpers.h rngs.h dominion.c rngs.c adventurerfunction.c cardtest2.c sea_hagfunction.c cardtest3.c treasure_mapfunction.c cardtest4.c fullDeckCountfunction.c unittest1.c gainCardfunction.c unittest2.c UnitTests.c unittest3.c unittest4.c isGameOverfunction.c numHandCardsfunction.c
+	gcc -o cardtest cardtest1.c smithyfunction.c dominion.h dominion_helpers.h rngs.h dominion.c rngs.c adventurerfunction.c cardtest2.c sea_hagfunction.c cardtest3.c treasure_mapfunction.c cardtest4.c fullDeckCountfunction.c unittest1.c gainCardfunction.c unittest2.c UnitTests.c unittest3.c unittest4.c isGameOverfunction.c numHandCardsfunction.c -coverage -fpic -lm
+
+
+
