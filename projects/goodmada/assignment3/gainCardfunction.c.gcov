@@ -1,0 +1,45 @@
+        -:    0:Source:gainCardfunction.c
+        -:    0:Graph:gainCardfunction.gcno
+        -:    0:Data:gainCardfunction.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include "dominion.h"
+        -:    3:#include "dominion_helpers.h"
+        -:    4:
+        8:    5:int gainCard_t(int supplyPos, struct gameState *state, int toFlag, int player)
+        -:    6:{
+        -:    7:	//Note: supplyPos is enum of choosen card
+        -:    8:
+        -:    9:	//check if supply pile is empty (0) or card is not used in game (-1)
+        8:   10:	if (supplyCount(supplyPos, state) < 1)
+        -:   11:	{
+        3:   12:		return -1;
+        -:   13:	}
+        -:   14:
+        -:   15:	//added card for [whoseTurn] current player:
+        -:   16:	// toFlag = 0 : add to discard
+        -:   17:	// toFlag = 1 : add to deck
+        -:   18:	// toFlag = 2 : add to hand
+        -:   19:
+        5:   20:	if (toFlag == 1)
+        -:   21:	{
+        1:   22:		state->deck[player][state->deckCount[player]] = supplyPos;
+        1:   23:		state->deckCount[player]++;
+        -:   24:	}
+        4:   25:	else if (toFlag == 2)
+        -:   26:	{
+        2:   27:		state->hand[player][state->handCount[player]] = supplyPos;
+        2:   28:		state->handCount[player]++;
+        -:   29:	}
+        -:   30:	else
+        -:   31:	{
+        2:   32:		state->discard[player][state->discardCount[player]] = supplyPos;
+        2:   33:		state->discardCount[player]++;
+        -:   34:	}
+        -:   35:
+        -:   36:	//decrease number in supply pile
+        5:   37:	state->supplyCount[supplyPos]--;
+        -:   38:
+        5:   39:	return 0;
+        -:   40:}

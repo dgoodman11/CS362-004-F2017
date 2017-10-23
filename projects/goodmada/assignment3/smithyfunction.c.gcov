@@ -1,0 +1,19 @@
+        -:    0:Source:smithyfunction.c
+        -:    0:Graph:smithyfunction.gcno
+        -:    0:Data:smithyfunction.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:
+        1:    3:int smithyfunction(int currentPlayer, int handPos, struct gameState *state) {
+        -:    4:	//+3 Cards
+        -:    5:	int i;
+        4:    6:	for (i = 0; i < 3; i++)
+        -:    7:	{
+        3:    8:		drawCard(currentPlayer, state);
+        -:    9:	}
+        -:   10:
+        -:   11:	//discard card from hand
+        1:   12:	discardCard(handPos, currentPlayer, state, 1);
+        1:   13:	return 0;
+        -:   14:}

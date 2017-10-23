@@ -1,0 +1,44 @@
+        -:    0:Source:fullDeckCountfunction.c
+        -:    0:Graph:fullDeckCountfunction.gcno
+        -:    0:Data:fullDeckCountfunction.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include "dominion.h"
+        -:    3:#include "dominion_helpers.h"
+        -:    4:
+        -:    5:
+function fullDeckCount_t called 5 returned 100% blocks executed 82%
+        5:    6:int fullDeckCount_t(int player, int card, struct gameState *state) {
+        -:    7:	int i;
+        5:    8:	int count = 0;
+        -:    9:
+       40:   10:	for (i = 0; i < state->deckCount[player]; i++)
+branch  0 taken 88%
+branch  1 taken 13% (fallthrough)
+        -:   11:	{
+       35:   12:		if (state->deck[player][i] == card) count++;
+branch  0 taken 29% (fallthrough)
+branch  1 taken 71%
+        -:   13:	}
+        -:   14:
+       20:   15:	for (i = 0; i < state->handCount[player]; i++)
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+        -:   16:	{
+       15:   17:		if (state->hand[player][i] == card) count++;
+branch  0 taken 27% (fallthrough)
+branch  1 taken 73%
+        -:   18:	}
+        -:   19:
+        5:   20:	for (i = 0; i < state->discardCount[player]; i++)
+branch  0 taken 0%
+branch  1 taken 100% (fallthrough)
+        -:   21:	{
+    #####:   22:		if (state->discard[player][i] == card) count++;
+branch  0 never executed
+branch  1 never executed
+        -:   23:	}
+        -:   24:
+        5:   25:	return count;
+        -:   26:}

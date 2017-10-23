@@ -7,8 +7,6 @@
         -:    2:#include "dominion.h"
         -:    3:#include "dominion_helpers.h"
         -:    4:
-function numHandCards_t called 3 returned 100% blocks executed 100%
         3:    5:int numHandCards_t(struct gameState *state) {
         3:    6:	return state->handCount[whoseTurn(state)];
-call    0 returned 100%
         -:    7:}

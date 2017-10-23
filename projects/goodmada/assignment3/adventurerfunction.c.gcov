@@ -1,0 +1,32 @@
+        -:    0:Source:adventurerfunction.c
+        -:    0:Graph:adventurerfunction.gcno
+        -:    0:Data:adventurerfunction.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "unittestheader.h"
+        -:    3:
+        1:    4:int adventurerfunction(int drawntreasure, int currentPlayer, int z, struct gameState *state) {
+        -:    5:	int cardDrawn;
+        -:    6:	int temphand[MAX_HAND];
+        -:    7:
+        4:    8:	while (drawntreasure<2) {
+        2:    9:		if (state->deckCount[currentPlayer] <1) {//if the deck is empty we need to shuffle discard and add to deck
+    #####:   10:			shuffle(currentPlayer, state);
+        -:   11:		}
+        2:   12:		drawCard(currentPlayer, state);
+        2:   13:		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer] - 1];//top card of hand is most recently drawn card.
+        2:   14:		if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+        2:   15:			drawntreasure++;
+        -:   16:		else {
+    #####:   17:			temphand[z] = cardDrawn;
+    #####:   18:			state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+        -:   19:		}
+        -:   20:	}
+        2:   21:	while (z - 1 >= 0) {
+    #####:   22:		state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[z - 1]; // discard all cards in play that have been drawn
+    #####:   23:		z = z - 1;
+        -:   24:	}
+        1:   25:	return 0;
+        -:   26:
+        -:   27:}

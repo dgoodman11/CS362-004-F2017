@@ -1,0 +1,40 @@
+        -:    0:Source:treasure_mapfunction.c
+        -:    0:Graph:treasure_mapfunction.gcno
+        -:    0:Data:treasure_mapfunction.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include "dominion.h"
+        -:    3:
+        2:    4:int treasure_mapfunction(int handPos, int currentPlayer, struct gameState *state) {
+        -:    5:	//search hand for another treasure_map
+        2:    6:	int index = -1;
+        -:    7:	int i;
+       12:    8:	for (i = 0; i < state->handCount[currentPlayer]; i++)
+        -:    9:	{
+       12:   10:		if (state->hand[currentPlayer][i] == treasure_map && i != index)
+        -:   11:		{
+        2:   12:			index = i;
+        2:   13:			break;
+        -:   14:		}
+        -:   15:	}
+        2:   16:	if (index > -1)
+        -:   17:	{
+        -:   18:		//trash both treasure cards
+        2:   19:		discardCard(handPos, currentPlayer, state, 1);
+        2:   20:		discardCard(index, currentPlayer, state, 1);
+        -:   21:
+        -:   22:		//gain 4 Gold cards
+       10:   23:		for (i = 0; i < 4; i++)
+        -:   24:		{
+        8:   25:			gainCard(gold, state, 1, currentPlayer);
+        -:   26:		}
+        -:   27:
+        -:   28:		//return success
+        2:   29:		return 1;
+        -:   30:	}
+        -:   31:
+        -:   32:	//no second treasure_map found in hand
+    #####:   33:	return -1;
+        -:   34:
+        -:   35:}
