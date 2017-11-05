@@ -1,0 +1,24 @@
+        -:    0:Source:smithyfunction.c
+        -:    0:Graph:smithyfunction.gcno
+        -:    0:Data:smithyfunction.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:
+function smithyfunction called 9999 returned 100% blocks executed 100%
+     9999:    3:int smithyfunction(int currentPlayer, int handPos, struct gameState *state) {
+        -:    4:	//+3 Cards
+        -:    5:	int i;
+    39996:    6:	for (i = 0; i < 3; i++)
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+        -:    7:	{
+    29997:    8:		drawCard(currentPlayer, state);
+call    0 returned 100%
+        -:    9:	}
+        -:   10:
+        -:   11:	//discard card from hand
+     9999:   12:	discardCard(handPos, currentPlayer, state, 1);
+call    0 returned 100%
+     9999:   13:	return 0;
+        -:   14:}

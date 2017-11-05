@@ -1,0 +1,54 @@
+        -:    0:Source:treasure_mapfunction.c
+        -:    0:Graph:treasure_mapfunction.gcno
+        -:    0:Data:treasure_mapfunction.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include "dominion.h"
+        -:    3:
+function treasure_mapfunction called 9999 returned 100% blocks executed 100%
+     9999:    4:int treasure_mapfunction(int handPos, int currentPlayer, struct gameState *state) {
+        -:    5:	//search hand for another treasure_map
+     9999:    6:	int index = -1;
+        -:    7:	int i;
+    42787:    8:	for (i = 0; i < state->handCount[currentPlayer]; i++)
+branch  0 taken 78%
+branch  1 taken 22% (fallthrough)
+        -:    9:	{
+    33333:   10:		if (state->hand[currentPlayer][i] == treasure_map && i != handPos)
+branch  0 taken 15% (fallthrough)
+branch  1 taken 85%
+branch  2 taken 11% (fallthrough)
+branch  3 taken 89%
+        -:   11:		{
+      545:   12:			index = i;
+      545:   13:			break;
+        -:   14:		}
+        -:   15:	}
+     9999:   16:	if (index > -1)
+branch  0 taken 5% (fallthrough)
+branch  1 taken 95%
+        -:   17:	{
+        -:   18:		//trash both treasure cards
+      545:   19:		discardCard(handPos, currentPlayer, state, 1);
+call    0 returned 100%
+      545:   20:		discardCard(index, currentPlayer, state, 1);
+call    0 returned 100%
+        -:   21:
+        -:   22:		//gain 4 Gold cards
+     2725:   23:		for (i = 0; i < 4; i++)
+branch  0 taken 80%
+branch  1 taken 20% (fallthrough)
+        -:   24:		{
+     2180:   25:			gainCard(gold, state, 1, currentPlayer); //add to deck
+call    0 returned 100%
+        -:   26:		}
+        -:   27:
+        -:   28:		//return success
+      545:   29:		return 1;
+        -:   30:	}
+        -:   31:
+        -:   32:	//no second treasure_map found in hand
+     9454:   33:	return -1;
+        -:   34:
+        -:   35:}

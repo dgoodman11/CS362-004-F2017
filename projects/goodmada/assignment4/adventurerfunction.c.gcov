@@ -1,0 +1,51 @@
+        -:    0:Source:adventurerfunction.c
+        -:    0:Graph:adventurerfunction.gcno
+        -:    0:Data:adventurerfunction.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:
+        -:    4:
+function adventurerfunction called 9999 returned 100% blocks executed 87%
+     9999:    5:int adventurerfunction(int currentPlayer, struct gameState *state) {
+        -:    6:	int cardDrawn;
+        -:    7:	int temphand[MAX_HAND];
+     9999:    8:	int drawntreasure = 0;
+     9999:    9:	int z = 0;
+        -:   10:
+    47455:   11:	while (drawntreasure<2) {
+branch  0 taken 73%
+branch  1 taken 27% (fallthrough)
+    27457:   12:		if (state->deckCount[currentPlayer] <1) {//if the deck is empty we need to shuffle discard and add to deck
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   13:			shuffle(currentPlayer, state);
+call    0 never executed
+        -:   14:		}
+    27457:   15:		drawCard(currentPlayer, state);
+call    0 returned 100%
+    27457:   16:		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer] - 1];//top card of hand is most recently drawn card.
+    27457:   17:		if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+branch  0 taken 27% (fallthrough)
+branch  1 taken 73%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+branch  4 taken 0% (fallthrough)
+branch  5 taken 100%
+    19998:   18:			drawntreasure++;
+        -:   19:		else {
+     7459:   20:			temphand[z] = cardDrawn;
+     7459:   21:			state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+        -:   22:			//z++;
+        -:   23:		}
+        -:   24:	}
+    19998:   25:	while (z - 1 >= 0) {
+branch  0 taken 0%
+branch  1 taken 100% (fallthrough)
+    #####:   26:		state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[z - 1]; // discard all cards in play that have been drawn
+    #####:   27:		z = z - 1;
+        -:   28:	}
+     9999:   29:	return 0;
+        -:   30:
+        -:   31:}
