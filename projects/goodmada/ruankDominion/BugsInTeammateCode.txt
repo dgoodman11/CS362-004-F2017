@@ -1,0 +1,166 @@
+Bug Report - 5 bugs detailed
+
+Title: Too many treasure cards are added to current player's hand
+
+Bug Number: 1
+
+Date: 11/19/17
+Reported By: Danielle Goodman
+Email: goodmada@oregonstate.edu
+
+Function: adventurerFunc()
+
+Is it reproducible: Yes
+
+Description
+The treasure count of the current player's hand is consistently one more than it should be; the treasure count should increase by 2, but it increases by 3.
+
+Steps to Produce/Reproduce
+1. Call the initializeGame() function using any seed values
+2. Take note of treasure count in hand
+3. Run the adventurerFunc() function
+4. Compare new treasure count in hand to previous treasure count
+
+Expected Results
+Current player has 2 more treasure cards in their hand than before the function executed
+
+Actual Results
+Current player has 3 more treasure cards in their hand
+
+Other Information
+The cause could potentially be the "while" loop in the function thatss supposed to run until two treasure cards are found and added to the current player's hand. This loop starts with the treasure count equal to 0, and runs "while(drawntreasure <= 2)". This "=2" part means the function will keep looking for treasure cards in the deck even after two treasure cards have already been found and added to the deck.
+
+-------------------------------------------------------------------------------
+
+Title: Current player ends turn with too many cards in their hand
+
+Bug Number: 2
+
+Date: 11/19/17
+Reported By: Danielle Goodman
+Email: goodmada@oregonstate.edu
+
+Function: adventurerFunc()
+
+Is it reproducible: Yes
+
+Description
+Current player ends turn with 4 additional cards in their hand, when they should end with 2 additional cards (two treasure cards)
+
+Steps to Produce/Reproduce
+1. Call the initializeGame() function using any seed values
+2. Take note of current player's hand count
+3. Run the adventurerFunc() function
+4. Compare new hand count to previous hand count
+
+Expected Results
+Current player's hand count is two more than before function call
+
+Actual Results
+Current player's hand count is four more than before function call
+
+Other Information
+This bug overlaps with the one mentioned previously where the current player has too many treasure cards in their hand. This additional treasure card accounts for one of the extra cards in the hand, but there's a second one that shouldn't be there either.
+
+
+-------------------------------------------------------------------------------
+
+
+Title: Discard count does not increase
+
+Bug Number: 3
+
+Date: 11/19/2017
+Reported By: Danielle Goodman
+Email: goodmada@oregonstate.edu
+
+Function: adventurerFunc()
+
+Is it reproducible: Yes
+
+Description
+All the cards drawn that are not treasure cards should be discarded, the discard pile count does not increase.
+
+Steps to Produce/Reproduce
+1. Call the initializeGame() function using any seed values
+2. Take note of current player's discard count
+3. Run the adventurerFunc() function
+4. Compare new discard count to previous count
+
+Expected Results
+Discard count should increase by some amount depending on how many cards need to be drawn from the deck in order to find two treasure cards
+
+Actual Results
+Discard count is unchanged after function call
+
+Other Information
+None
+
+
+-----------------------------------------------------------------------------
+
+
+Title: Smithy function results in current player having one extra card in hand
+
+Bug Number: 4
+
+Date: 11/19/2017
+Reported By: Danielle Goodman
+Email: goodmada@oregonstate.edu
+
+Function: smithyFunc
+
+Is it reproducible: Yes
+
+Description
+The current player consistently has one extra card in their hand after the smithy function is executed. Their hand count should increase by three, but it increases by 4.
+
+Steps to Produce/Reproduce
+1. Call the initializeGame() function using any seed values
+2. Take note of current player's hand count
+3. Run the smithyFunc() function
+4. Compare new hand count to previous count
+
+Expected Results
+Current player's hand count is +3 after function call
+
+Actual Results
+Current player's hand count is +4 after function call
+
+Other Information
+I suspect this bug is the result of an error with the for loop: the loop is supposed to draw 3 cards, but it's written: "for(i = 0; i < 4; i++)". This means the loop will actually execute 4 times, meaning 4 cards are drawn.
+
+
+------------------------------------------------------------------------------
+
+
+Title: Smithy function results in discard count that is 1 less than expected
+
+Bug Number: 5
+
+Date: 11/19/2017
+Reported By: Danielle Goodman
+Email: goodmada@oregonstate.edu
+
+Function: smithyFunc()
+
+Is it reproducible: Yes
+
+Description
+Discard count doesn't increase as it should. Playing the Smithy card should increase the discard count by 1 when the card itself is discarded after it's played, but the discard count does not change
+
+Steps to Produce/Reproduce
+1. Call the initializeGame() function using any seed values
+2. Take note of current player's discard count
+3. Run the smithyFunc() function
+4. Compare new discard count to previous count
+
+Expected Results
+Discard count should increase by 1 when the Smithy card is discarded
+
+Actual Results
+Discard count does not change
+
+Other Information
+None
+
